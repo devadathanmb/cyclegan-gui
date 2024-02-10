@@ -16,3 +16,7 @@
 .react-loading-skeleton {
   line-height: unset !important;
 }
+
+.img-thumbnail {
+  min-width: 200px;
+}

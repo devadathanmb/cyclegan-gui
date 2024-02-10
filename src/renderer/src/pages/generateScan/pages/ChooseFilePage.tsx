@@ -38,7 +38,7 @@ const ChooseFilePage: React.FC<ChooseFilePageProps> = ({ selectedScanType, onSel
           <Col className="mx-auto" md={5}>
             <Image
               src={`file://${selectedFile.path}`}
-              alt="Preview"
+              alt="Preview image"
               className="img-thumbnail mx-auto"
             />
           </Col>

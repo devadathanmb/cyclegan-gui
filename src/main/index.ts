@@ -2,6 +2,8 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import fs from 'node:fs'
+import { SpawnOptions, spawn } from 'child_process'
 
 function createWindow(): void {
   // Create the browser window.
@@ -36,6 +38,73 @@ function createWindow(): void {
   }
 }
 
+// @ts-ignore asdf
+async function handleGenerateScan(event, ...args): Promise<string> {
+  try {
+    // Change directory into model project directory
+    process.chdir('/home/devadathan/repos/cycle-gan')
+    // Create directory to store generated scans if not exists
+    await fs.promises.mkdir('generated-scans', { recursive: true })
+    // Store generated scans by date of generation
+    const dateFolder = new Date().toISOString().replace(/:/g, '-')
+
+    // Figure out the input and target scan types
+    let targetScanType: string
+    let inputScanType: string
+    if (args[0] === 'ct') {
+      inputScanType = 'mri'
+      targetScanType = 'ct'
+    } else {
+      inputScanType = 'ct'
+      targetScanType = 'mri'
+    }
+
+    // Set input and output file paths
+    const inputFilePath = `generated-scans/${dateFolder}/${inputScanType}.jpg`
+    const outputFilePath = `generated-scans/${dateFolder}/${targetScanType}.jpg`
+
+    // Create generated scans directory and copy input file
+    await fs.promises.mkdir(`generated-scans/${dateFolder}`, { recursive: true })
+    await fs.promises.copyFile(args[1], `${inputFilePath}`)
+
+    // Run the pretrained model to generate the scan
+    const pythonProcess = spawn(
+      'poetry',
+      [
+        'run',
+        'python',
+        '~/repos/cycle-gan/inference.py',
+        `--target-scan-type ${targetScanType}`,
+        `--input-file ${inputFilePath}`,
+        `--output-file ${outputFilePath}`
+      ],
+      { shell: true }
+    )
+
+    // Log the stderr
+    pythonProcess.stderr.on('data', (data) => {
+      console.error(`Error from Python process: ${data}`)
+    })
+
+    // Wrap the process in a promise and resolve or reject based on the exit code
+    return await new Promise<string>((resolve, reject) => {
+      pythonProcess.on('close', (code) => {
+        if (code === 0) {
+          resolve(`${process.cwd()}/generated-scans/${dateFolder}/${targetScanType}.jpg`)
+        } else {
+          reject(`Python process exited with code ${code}.`)
+        }
+      })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function handleViewGeneratedScans(): Promise<void> {
+  shell.openPath('/home/devadathan/repos/cycle-gan/generated-scans')
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -50,8 +119,11 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  // IPC handle generate scan
+  ipcMain.handle('generate-scan', handleGenerateScan)
+
+  // IPC hanldle view scan
+  ipcMain.on('view-generated-scans', handleViewGeneratedScans)
 
   createWindow()
 
