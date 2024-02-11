@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import fs from 'node:fs'
-import { SpawnOptions, spawn } from 'child_process'
+import { spawn } from 'child_process'
 
 function createWindow(): void {
   // Create the browser window.
