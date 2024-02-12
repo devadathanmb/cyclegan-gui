@@ -38,6 +38,13 @@ function createWindow(): void {
   }
 }
 
+// Handle open image
+// @ts-ignore asdf
+async function handleOpenImage(event, ...args): Promise<string> {
+  const filePath = args[0]
+  return await shell.openPath(filePath)
+}
+
 // @ts-ignore asdf
 async function handleGenerateScan(event, ...args): Promise<string> {
   try {
@@ -101,8 +108,8 @@ async function handleGenerateScan(event, ...args): Promise<string> {
   }
 }
 
-async function handleViewGeneratedScans(): Promise<void> {
-  shell.openPath('/home/devadathan/repos/cycle-gan/generated-scans')
+async function handleViewGeneratedScans(): Promise<string> {
+  return await shell.openPath('/home/devadathan/repos/cycle-gan/generated-scans')
 }
 
 // This method will be called when Electron has finished
@@ -122,8 +129,11 @@ app.whenReady().then(() => {
   // IPC handle generate scan
   ipcMain.handle('generate-scan', handleGenerateScan)
 
-  // IPC hanldle view scan
-  ipcMain.on('view-generated-scans', handleViewGeneratedScans)
+  // IPC hanldle view all generated scans
+  ipcMain.handle('view-generated-scans', handleViewGeneratedScans)
+
+  // IPC to handle opening particular image generated
+  ipcMain.on('open-image', handleOpenImage)
 
   createWindow()
 

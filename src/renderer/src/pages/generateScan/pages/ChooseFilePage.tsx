@@ -5,13 +5,16 @@ import Image from 'react-bootstrap/Image'
 import { toast } from 'react-toastify'
 
 interface ChooseFilePageProps {
-  selectedScanType: string
+  selectedTargetScanType: string
   onSelectFilePath: (filePath: string) => void
 }
 
-const ChooseFilePage: React.FC<ChooseFilePageProps> = ({ selectedScanType, onSelectFilePath }) => {
+const ChooseFilePage: React.FC<ChooseFilePageProps> = ({
+  selectedTargetScanType,
+  onSelectFilePath
+}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const scanType = selectedScanType.toUpperCase() === 'CT' ? 'MRI' : 'CT'
+  const targetScanType = selectedTargetScanType.toUpperCase() === 'CT' ? 'MRI' : 'CT'
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const fileList = event.target.files!
@@ -27,9 +30,9 @@ const ChooseFilePage: React.FC<ChooseFilePageProps> = ({ selectedScanType, onSel
 
   return (
     <div className="container mt-3 text-center">
-      <h3 className="mb-4">Choose {scanType}</h3>
+      <h3 className="mb-4">Choose {targetScanType}</h3>
       <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>Please choose the {scanType} scan</Form.Label>
+        <Form.Label>Please choose the {targetScanType} scan</Form.Label>
         <Form.Control type="file" onChange={handleFileChange} />
       </Form.Group>{' '}
       {selectedFile && (

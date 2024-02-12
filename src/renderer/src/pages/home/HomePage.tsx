@@ -1,9 +1,13 @@
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-function handleViewScansClick(): void {
+async function handleViewScansClick(): Promise<void> {
   //@ts-ignore fix later
-  window.api.viewGeneratedScans()
+  const error = await window.api.viewGeneratedScans()
+  if (error) {
+    toast.error(error)
+  }
 }
 
 const HomePage: React.FC = () => {

@@ -17,6 +17,8 @@
   line-height: unset !important;
 }
 
-.img-thumbnail {
-  min-width: 200px;
+.preview-img {
+  height: 256px !important;
+  width: 256px !important;
+  object-fit: cover;
 }

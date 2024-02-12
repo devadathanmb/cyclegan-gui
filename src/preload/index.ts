@@ -5,7 +5,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   generateScan: (...args: string[]): Promise<string> =>
     ipcRenderer.invoke('generate-scan', ...args),
-  viewGeneratedScans: (): void => ipcRenderer.send('view-generated-scans')
+  viewGeneratedScans: (): Promise<string> => ipcRenderer.invoke('view-generated-scans'),
+  openImage: (...args: string[]): void => ipcRenderer.send('open-image', ...args)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

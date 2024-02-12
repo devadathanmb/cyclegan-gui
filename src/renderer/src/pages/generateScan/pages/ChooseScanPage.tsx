@@ -2,13 +2,16 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 
 interface ChooseScanPageProps {
-  selectedScanType: string
-  onSelectScanType: (scanType: string) => void
+  selectedTargetScanType: string
+  onSelectTargetScanType: (scanType: string) => void
 }
 
-const ChooseScanPage: React.FC<ChooseScanPageProps> = ({ selectedScanType, onSelectScanType }) => {
+const ChooseScanPage: React.FC<ChooseScanPageProps> = ({
+  selectedTargetScanType,
+  onSelectTargetScanType
+}) => {
   const handleScanTypeSelection = (scanType: string): void => {
-    onSelectScanType(scanType)
+    onSelectTargetScanType(scanType)
   }
 
   return (
@@ -19,7 +22,7 @@ const ChooseScanPage: React.FC<ChooseScanPageProps> = ({ selectedScanType, onSel
           variant="primary"
           size="lg"
           className="mx-2 px-5"
-          active={selectedScanType === 'mri'}
+          active={selectedTargetScanType === 'mri'}
           onClick={() => handleScanTypeSelection('mri')}
         >
           MRI
@@ -28,16 +31,17 @@ const ChooseScanPage: React.FC<ChooseScanPageProps> = ({ selectedScanType, onSel
           variant="primary"
           size="lg"
           className="mx-2 px-5"
-          active={selectedScanType === 'ct'}
+          active={selectedTargetScanType === 'ct'}
           onClick={() => handleScanTypeSelection('ct')}
         >
           CT
         </Button>
       </div>
-      {selectedScanType && (
+      {selectedTargetScanType && (
         <div className="text-center">
           <p className="mt-3 fw-bold">
-            Selected scan type: <span className="fw-bold">{selectedScanType.toUpperCase()}</span>
+            Selected scan type:{' '}
+            <span className="fw-bold">{selectedTargetScanType.toUpperCase()}</span>
           </p>
         </div>
       )}

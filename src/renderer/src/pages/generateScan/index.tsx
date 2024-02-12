@@ -8,11 +8,11 @@ import { Button } from 'react-bootstrap'
 
 const GeneraScanWizard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
-  const [selectedScanType, setSelectedScanType] = useState<string>('')
+  const [selectedTargetScanType, setSelectedTargetScanType] = useState<string>('')
   const [selectedFilePath, setSelectedFilePath] = useState<string>('')
 
   const nextPage = (): void => {
-    if (currentPage === 0 && !selectedScanType) {
+    if (currentPage === 0 && !selectedTargetScanType) {
       toast.error('Please select a scan type')
       return
     }
@@ -38,21 +38,21 @@ const GeneraScanWizard: React.FC = () => {
       case 0:
         return (
           <ChooseScanPage
-            selectedScanType={selectedScanType}
-            onSelectScanType={setSelectedScanType}
+            selectedTargetScanType={selectedTargetScanType}
+            onSelectTargetScanType={setSelectedTargetScanType}
           />
         )
       case 1:
         return (
           <ChooseFilePage
-            selectedScanType={selectedScanType}
+            selectedTargetScanType={selectedTargetScanType}
             onSelectFilePath={setSelectedFilePath}
           />
         )
       case 2:
         return (
           <ShowGeneratedScanPage
-            selectedScanType={selectedScanType}
+            selectedTargetScanType={selectedTargetScanType}
             selectedFilePath={selectedFilePath}
           />
         )
