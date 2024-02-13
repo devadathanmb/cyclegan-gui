@@ -18,7 +18,7 @@ const router = createHashRouter([
 const App: React.FC = () => {
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer position="top-center" theme="colored" />
       <RouterProvider router={router} />
     </div>
   )
