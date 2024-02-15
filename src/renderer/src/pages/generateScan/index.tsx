@@ -20,12 +20,6 @@ const GeneraScanWizard: React.FC = () => {
       toast.error('Please select a file')
       return
     }
-    // After choosing file, clicking on next should render the final page
-    // and trigger the scan generation process asynchronusly
-    // a skelton image should be shown in the final page
-    if (currentPage === 1) {
-      // do nothing for now
-    }
     setCurrentPage(currentPage + 1)
   }
 
