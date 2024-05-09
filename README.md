@@ -1,10 +1,6 @@
-# ct-mri-cyclegan-gui
+# CT-MRI cyclegan GUI
 
-An Electron application with React and TypeScript
-
-## Recommended IDE Setup
-
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+A basic electron GUI made to inference [CT-MRI cyclegan](https://github.com/devadathanmb/cyclegan-core)
 
 ## Project Setup
 
